@@ -35,16 +35,16 @@
 */
 
 // 1，成一张雷的地图
-var mineSweepingMap = function(r, c, num) {
+var mineSweepingMap = function (r, c, num) {
     var map = []
     // 给行数，生成一个 1 维数组
-    var row = function(r) {
+    var row = function (r) {
         for (var i = 0; i < r; i++) {
             map[i] = new Array()
         }
     }
     // 给列数，生成一个 2 维数组
-    var column = function(col) {
+    var column = function (col) {
         for (var i = 0; i < map.length; i++) {
             for (var j = 0; j < col; j++) {
                 map[i][j] = 0
@@ -52,15 +52,15 @@ var mineSweepingMap = function(r, c, num) {
         }
     }
     // 给列数和行数生成空地图
-    var blankMap = function(r, col) {
+    var blankMap = function (r, col) {
         row(r)
         column(col)
     }
 
     // 给出地雷数量让后随机写入地雷
-    var writeInMine = function(num) {
+    var writeInMine = function (num) {
         // 随机位置写入
-        var randomLocation = function() {
+        var randomLocation = function () {
             var x = Math.floor(Math.random() * r)
             var y = Math.floor(Math.random() * c)
             // console.log( ':', x, y);
@@ -76,14 +76,14 @@ var mineSweepingMap = function(r, c, num) {
     }
 
     // 使用循环给雷的边上所有数 +1 , 已经是雷的除外
-    var plus = function(array, x, y) {
+    var plus = function (array, x, y) {
         if (x >= 0 && x < r && y >= 0 && y < c) {
             if (array[x][y] !== 9) {
                 array[x][y] += 1
             }
         }
     }
-    var writeInHint = function() {
+    var writeInHint = function () {
         for (var x = 0; x < map.length; x++) {
             for (var y = 0; y < map[0].length; y++) {
                 if (map[x][y] === 9) {
@@ -107,7 +107,7 @@ var mineSweepingMap = function(r, c, num) {
 }
 
 // 2，将雷写入页面
-var writeHtml = function(map) {
+var writeHtml = function (map) {
     // 先通过 y轴数量写入 ul，然后通过 x轴上的数量写入 li
     var x = document.querySelector('.gameBox')
     for (var i = 0; i < map.length; i++) {
@@ -131,13 +131,13 @@ var writeHtml = function(map) {
 }
 
 // 判断是否胜利
-var changeClearMineNum = function(clearMineNum) {
+var changeClearMineNum = function (clearMineNum) {
     // console.log('zmzmzmzm');
     // console.log('zz', zz);
     if (clearMineNum === ((col * row) - num)) {
         var all = document.querySelectorAll('.col')
         var allNum = 0
-        var stop = setInterval(function() {
+        var stop = setInterval(function () {
             var r = Math.floor(Math.random() * 256)
             var g = Math.floor(Math.random() * 256)
             var b = 210
@@ -159,9 +159,9 @@ var changeClearMineNum = function(clearMineNum) {
 }
 
 // 3，扫雷过程
-var clearMine = function(row, col, num) {
+var clearMine = function (row, col, num) {
     var clearMineNum = 0
-    var makeWhite = function(x, y) {
+    var makeWhite = function (x, y) {
         if (x < row && y < col && x >= 0 && y >= 0) {
             var el = document.querySelector(`.x-${x}`).children[y]
             // 需要注意这个 ！== 'white' ，如果不加这个就会进入无限循环
@@ -169,9 +169,9 @@ var clearMine = function(row, col, num) {
                 el.style.background = 'white'
                 el.children[0].style.opacity = '1'
                 el.children[1].classList.add('hide')
-                    clearMineNum++
-                    // console.log(clearMineNum, 'clearMineNum');
-                    changeClearMineNum(clearMineNum)
+                clearMineNum++
+                // console.log(clearMineNum, 'clearMineNum');
+                changeClearMineNum(clearMineNum)
                 if (el.innerText === '') {
                     showNoMine(x, y)
                 }
@@ -179,7 +179,7 @@ var clearMine = function(row, col, num) {
         }
     }
     // 智能扫雷
-    var showNoMine = function(x, y) {
+    var showNoMine = function (x, y) {
         // console.log(x, y, 'x,y');
         makeWhite(x - 1, y + 1)
         makeWhite(x - 1, y - 1)
@@ -192,11 +192,11 @@ var clearMine = function(row, col, num) {
     }
 
     // 给所有方块绑定点击事件，点击显示数字，或者 boom
-    var show = function() {
+    var show = function () {
         // var x = document.querySelectorAll('.col')
         var x = document.querySelectorAll('.row')
         for (var i = 0; i < x.length; i++) {
-            x[i].addEventListener('click', function(event) {
+            x[i].addEventListener('click', function (event) {
                 var el = event.target
                 if (el.tagName != 'LI') {
                     // 因为事件委托的原因
@@ -213,7 +213,7 @@ var clearMine = function(row, col, num) {
                         clearMineNum++
                         changeClearMineNum(clearMineNum)
                         // console.log(clearMineNum, 'clearMineNum');
-                    } else if (el.children[0].innerText === '9' ) {
+                    } else if (el.children[0].innerText === '9') {
                         // el.children[0].style.opacity = '1'
                         zz = 1
                         el.classList.add('boom')
@@ -236,7 +236,7 @@ var clearMine = function(row, col, num) {
                         } else if (num > 10) {
                             time = 25
                         }
-                        var stop = setInterval(function() {
+                        var stop = setInterval(function () {
                             ff[allNum].classList.add('boom')
                             allNum++
                             if (allNum === ff.length) {
@@ -264,10 +264,10 @@ var clearMine = function(row, col, num) {
         }
         for (var i = 0; i < x.length; i++) {
             var mineNum = num
-            x[i].addEventListener('contextmenu', function(event) {
+            x[i].addEventListener('contextmenu', function (event) {
                 event.preventDefault();
                 var btnNum = event.button
-                var  el = event.target
+                var el = event.target
                 if (el.tagName != 'LI') {
                     // 因为事件委托的原因
                     // 如果点击到了 span 上面，那么就会出现 bug
@@ -296,14 +296,14 @@ var clearMine = function(row, col, num) {
 
 // 4，清除画面，然后写入新的画面
 var stopTime
-var initializeGame = function(row, col, num) {
+var initializeGame = function (row, col, num) {
     var residue = document.querySelector('.residue')
     residue.innerText = `${num}`
     var time = document.querySelector('.tick')
     time.innerText = `0`
     var i = 1
     clearInterval(stopTime)
-    stopTime = setInterval(function() {
+    stopTime = setInterval(function () {
         time.innerText = `${i++}`
     }, 1000)
     // zz
@@ -319,10 +319,10 @@ var initializeGame = function(row, col, num) {
 }
 
 // 5，选择游戏等级，给按钮绑定功能
-var Btn = function() {
+var Btn = function () {
     var level = document.querySelectorAll('.choice-level')
     for (var i = 0; i < level.length; i++) {
-        level[i].addEventListener('click', function(event) {
+        level[i].addEventListener('click', function (event) {
             var level = event.target.innerHTML
             if (level === '初级') {
                 row = 9
@@ -343,7 +343,7 @@ var Btn = function() {
         })
     }
     var restart = document.querySelector('.restart')
-    restart.addEventListener('click', function(event) {
+    restart.addEventListener('click', function (event) {
         initializeGame(row, col, num)
     })
 }
